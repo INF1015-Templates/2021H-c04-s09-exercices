@@ -15,55 +15,70 @@
 #include <span>
 #include <utility>
 #include <list>
+#include <set>
+#include <map>
+#include <unordered_set>
+#include <unordered_map>
 
 #include <cppitertools/itertools.hpp>
 #include <cppitertools/zip.hpp>
 
 #include "MyClass.hpp"
 #include "List.hpp"
+#include "brackets.hpp"
+#include "School.hpp"
 
 using namespace std;
 using namespace iter;
 
 
+void runBracketsExample() {
+	char brackets[] = {'(', ')', '{', '}', '[', ']'};
+	string yeet = "(yeet){yeet}";
+	string yeeet = "({yeet})";
+	string yeeeet = "({yeet)}";
+	string yeeeeet = "(yeet";
+	cout << checkBrackets(yeet, brackets) << "\n";
+	cout << checkBrackets(yeeet, brackets) << "\n";
+	cout << checkBrackets(yeeeet, brackets) << "\n";
+	cout << checkBrackets(yeeeeet, brackets) << "\n";
+}
+
+void runSchoolExample() {
+	School school;
+	Professor prof(0xC0FFEE);
+	school.addNewGrad(0xDEADBEEF, "Infologie", &prof);
+	GraduateStudent& foo = *school.findGrad(0xDEADBEEF);
+	Student& bar = foo;
+	foo.changeSupervisor(nullptr);
+	foo.updateGpa(2.5);
+	bar.updateGpa(3.8);
+	bar.changeProgram("whatever idk my life is meaningless");
+}
+
 void runListExample() {
-	{
-		List<int> alexanderThibault = {1, 3, 4};
-		auto it = ++alexanderThibault.begin(); // Faire ++ sur un itérateur le fait avancer, donc faire ++ sur le résultat de begin() (le premier élément) nous amène au deuxième.
-		alexanderThibault.insert(it, 2);
-		cout << alexanderThibault << "\n";
+	unordered_map<List<int>, string> myMap = {
+		{{0xDEAD, 0xBEEF}, "mooo"},
+		{{0xFED, 0xBABE, 0xBAD, 0xC0FFEE}, "oops"},
+		{{420, 69}, "nice"}
+	};
 
-		it = alexanderThibault.erase(alexanderThibault.begin());
-		cout << "1er elem : " << *it << "\n";
-		alexanderThibault.pop_back();
-		alexanderThibault.pop_front();
-		cout << alexanderThibault << "\n";
-	}
-
-	cout << string(60, '-') << endl;
-
-	{
-		List<int> michelleCardinal = {69, 420};
-		cout << michelleCardinal << "\n";
-		michelleCardinal.erase(--michelleCardinal.end()); // On ne peut pas erase le end(), car cet élément n'existe pas (il est après la fin de la liste). C'est pour cela que je fait -- sur end() pour avoir un itérateur sur le dernier élément. C'est pas mal la convention en C++.
-		cout << michelleCardinal << "\n";
-		michelleCardinal.pop_back();
-		cout << michelleCardinal << "\n";
-	}
+	cout << myMap.contains({420, 69}) << "\n";
+	cout << myMap.contains({69, 420}) << "\n";
+	cout << myMap.at({0xDEAD, 0xBEEF}) << "\n";
+	map<List<int>, string> myMap2 = {
+		{{0xDEAD, 0xBEEF}, "mooo"},
+		{{0xFED, 0xBABE, 0xBAD, 0xC0FFEE}, "oops"},
+		{{420, 69}, "nice"}
+	};
 }
 
 
 int main() {
-	runListExample(); cout << "\n\n\n\n";
+	cout.setf(ios::boolalpha);
 
-	const List<int> foo = {1, 2, 3};
-	auto it = foo.begin();
-	cout << *it << "\n";
-	++it;
-	cout << *it << "\n";
-	--it;
-	cout << *it << "\n";
-	for (auto e : foo)
-		cout << e << " ";
+	runBracketsExample(); cout << "\n\n\n\n";
+	runSchoolExample(); cout << "\n\n\n\n";
+	runListExample(); cout << "\n\n\n\n";
 }
 

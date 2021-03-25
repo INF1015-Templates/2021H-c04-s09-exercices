@@ -154,9 +154,11 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="brackets.hpp" />
     <ClInclude Include="List.hpp" />
     <ClInclude Include="MyClass.hpp" />
     <ClInclude Include="print.hpp" />
+    <ClInclude Include="School.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />

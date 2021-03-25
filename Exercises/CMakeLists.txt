@@ -11,7 +11,8 @@ set(ALL_FILES
     "print.hpp"
     "School.hpp"
     "MyClass.hpp"
-    "Animal.hpp")
+    "List.hpp"
+    "brackets.hpp")
 
 add_executable(${PROJECT_NAME} ${ALL_FILES})
 

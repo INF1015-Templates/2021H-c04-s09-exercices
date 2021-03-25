@@ -80,6 +80,9 @@ public:
 	using ListValueType = typename ListT::value_type;
 	// En gros, si la liste est constante, alors le type de valeur (value_type) est le value_type de la liste avec const.
 	using value_type = typename conditional_t<is_const_v<ListT>, const ListValueType, ListValueType>;
+	using difference_type = ptrdiff_t;
+	using reference = value_type&;
+	using iterator_category = std::bidirectional_iterator_tag;
 
 	ListIterator_impl() = default;
 	ListIterator_impl(const ListIterator_impl&) = default;
@@ -290,6 +293,19 @@ public:
 		}
 	}
 
+	bool operator==(const List<T>& rhs) const {
+		if (size() != rhs.size())
+			return false;
+		for (auto&& [e1, e2] : zip(*this, rhs))
+			if (e1 != e2)
+				return false;
+		return true;
+	}
+
+	bool operator<(const List<T>& rhs) const {
+		return lexicographical_compare(begin(), end(), rhs.begin(), rhs.end());
+	}
+
 	friend ostream& operator<<(ostream& lhs, const List& rhs) {
 		auto printWidth = lhs.width();
 		lhs << "[";
@@ -309,3 +325,19 @@ private:
 	NodeType*            last_ = nullptr;
 	size_t               size_ = 0;
 };
+
+
+namespace std {
+
+template <typename T>
+struct hash<typename List<T>> {
+	size_t operator()(const List<T>& list) const noexcept {
+		size_t result = 0;
+		for (size_t i = 0; auto&& e : list)
+			result ^= hash<T>{}(e) + ++i;
+		return result;
+	}
+};
+
+}
+
